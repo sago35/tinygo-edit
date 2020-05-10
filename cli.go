@@ -18,7 +18,9 @@ type cli struct {
 }
 
 var (
-	app = kingpin.New(appName, appDescription)
+	app    = kingpin.New(appName, appDescription)
+	target = app.Flag("target", "target name").Default("pyportal").String()
+	editor = app.Flag("editor", "editor path").Default("gvim").String()
 )
 
 // Run ...
@@ -39,6 +41,10 @@ func (c *cli) Run(args []string) error {
 
 	switch k {
 	default:
+		err := edit(*target, *editor)
+		if err != nil {
+			return err
+		}
 	}
 
 	return nil
