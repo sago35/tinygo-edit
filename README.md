@@ -12,13 +12,13 @@ By default, all flags and commands/subcommands generate completions internally.
 You can enable autocompletion by setting the following to `~/.bashrc` etc.  
 
 ```
-$ eval "$(your-cli-tool --completion-script-bash)"
+$ eval "$(tinygo-edit --completion-script-bash)"
 ```
 
 Or for ZSH
 
 ```
-$ eval "$(your-cli-tool --completion-script-zsh)"
+$ eval "$(tinygo-edit --completion-script-zsh)"
 ```
 
 * https://github.com/alecthomas/kingpin#bashzsh-shell-completion
