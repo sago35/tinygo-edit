@@ -11,7 +11,7 @@ import (
 	"github.com/mattn/go-tty"
 )
 
-func edit(target, editor string) error {
+func edit(target, editor string, wait bool) error {
 	buf := bytes.Buffer{}
 	cmd := exec.Command(`tinygo`, `info`, `-target`, target)
 	cmd.Stdout = &buf
@@ -39,7 +39,7 @@ func edit(target, editor string) error {
 		}
 	}
 
-	err = startEditor(editor, env)
+	err = startEditor(editor, env, wait)
 	if err != nil {
 		return err
 	}
@@ -47,7 +47,7 @@ func edit(target, editor string) error {
 	return nil
 }
 
-func startEditor(editor string, env []string) error {
+func startEditor(editor string, env []string, wait bool) error {
 	tty, err := tty.Open()
 	if err != nil {
 		return err
@@ -58,9 +58,11 @@ func startEditor(editor string, env []string) error {
 	cmd.Stdout = tty.Output()
 	cmd.Stderr = tty.Output()
 	cmd.Env = append(os.Environ(), env...)
-	//return cmd.Start()
-	if err := cmd.Run(); err != nil {
-		return fmt.Errorf("abort renames: %s", err)
+	if wait {
+		if err := cmd.Run(); err != nil {
+			return fmt.Errorf("abort renames: %s", err)
+		}
+		return nil
 	}
-	return nil
+	return cmd.Start()
 }
