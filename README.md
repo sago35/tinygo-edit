@@ -5,6 +5,8 @@ Using tinygo-edit, you can easily integrate with gopls.
 
 ## Description
 
+![tinygo-edit-with-vim](tinygo-edit-with-vim.gif)
+
 * https://dev.to/sago35/tinygo-vim-gopls-48h1
 
 ### Bash/ZSH Shell Completion
