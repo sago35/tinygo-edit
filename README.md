@@ -6,6 +6,23 @@ Add an environment variable for tinygo and open the editor.
 
 * https://dev.to/sago35/tinygo-vim-gopls-48h1
 
+### Bash/ZSH Shell Completion
+
+By default, all flags and commands/subcommands generate completions internally.  
+You can enable autocompletion by setting the following to `~/.bashrc` etc.  
+
+```
+$ eval "$(your-cli-tool --completion-script-bash)"
+```
+
+Or for ZSH
+
+```
+$ eval "$(your-cli-tool --completion-script-zsh)"
+```
+
+* https://github.com/alecthomas/kingpin#bashzsh-shell-completion
+
 ## Usage
 
 ```
@@ -29,7 +46,6 @@ $ export TINYGOPATH=/path/to/your/tinygo
 $ windows cmd.exe
 $ set TINYGOPATH=C:\path\to\your\tinygo
 ```
-
 
 ## Installation
 
