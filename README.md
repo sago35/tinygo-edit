@@ -5,7 +5,13 @@ Using tinygo-edit, you can easily integrate with gopls.
 
 ## Description
 
+### Vim
+
 ![tinygo-edit-with-vim](tinygo-edit-with-vim.gif)
+
+### VSCode
+
+![tinygo-edit-with-code](tinygo-edit-with-code.gif)
 
 * https://dev.to/sago35/tinygo-vim-gopls-48h1
 
