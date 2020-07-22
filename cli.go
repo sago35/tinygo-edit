@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"io"
 	"os"
@@ -35,14 +36,7 @@ func (c *cli) Run(args []string) error {
 		return fmt.Errorf("$TINYGOPATH is not set. ex: export TINYGOPATH=/path/to/your/tinygo/")
 	}
 
-	targets, err := filepath.Glob(filepath.Join(os.Getenv(`TINYGOPATH`), "targets", "*.json"))
-	if err != nil {
-		return err
-	}
-	for i := range targets {
-		targets[i] = strings.TrimSuffix(filepath.Base(targets[i]), filepath.Ext(targets[i]))
-	}
-	targets = append(targets, "pyportal")
+	targets, err := getTargets(os.Getenv(`TINYGOPATH`))
 	app.Flag("target", "target name").Default("pyportal").EnumVar(&target, targets...)
 
 	if VERSION != "" {
@@ -70,4 +64,34 @@ func (c *cli) Run(args []string) error {
 	}
 
 	return nil
+}
+
+func getTargets(tinygopath string) ([]string, error) {
+
+	r, err := os.Open(filepath.Join(os.Getenv(`TINYGOPATH`), "Makefile"))
+	if err != nil {
+		return nil, err
+	}
+	defer r.Close()
+
+	scanner := bufio.NewScanner(r)
+	targets := []string{}
+	exists := map[string]bool{}
+	for scanner.Scan() {
+		t := scanner.Text()
+		if strings.Contains(t, `$(TINYGO)`) && strings.Contains(t, `-target=`) {
+			fields := strings.Fields(t)
+			for _, f := range fields {
+				if strings.HasPrefix(f, `-target=`) {
+					target := f[8:]
+					if !exists[target] {
+						exists[target] = true
+						targets = append(targets, target)
+					}
+				}
+			}
+		}
+	}
+
+	return targets, nil
 }
