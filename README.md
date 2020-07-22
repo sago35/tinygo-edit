@@ -1,6 +1,7 @@
 # tinygo-edit
 
-Add an environment variable for tinygo and open the editor.
+Add an environment variable for tinygo and open the editor.  
+Using tinygo-edit, you can easily integrate with gopls.  
 
 ## Description
 
@@ -45,6 +46,19 @@ $ export TINYGOPATH=/path/to/your/tinygo
 
 $ windows cmd.exe
 $ set TINYGOPATH=C:\path\to\your\tinygo
+```
+
+Now you can use tinygo-edit.
+
+```
+# Vim
+$ tinygo-edit --target xiao --editor vim --wait
+
+# gVim
+$ tinygo-edit --target xiao --editor gvim
+
+# VSCode
+$ tinygo-edit --target xiao --editor code
 ```
 
 ## Installation
