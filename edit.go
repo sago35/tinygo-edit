@@ -7,6 +7,8 @@ import (
 	"os"
 	"os/exec"
 	"strings"
+
+	"github.com/mattn/go-tty"
 )
 
 func edit(target, editor string) error {
@@ -19,7 +21,7 @@ func edit(target, editor string) error {
 		return err
 	}
 
-	env := []string{}
+	env := []string{`GOPATH=` + strings.Join([]string{os.Getenv(`TINYGOPATH`), os.Getenv(`GOPATH`)}, string(os.PathListSeparator))}
 	scanner := bufio.NewScanner(&buf)
 	for scanner.Scan() {
 		line := scanner.Text()
@@ -46,9 +48,19 @@ func edit(target, editor string) error {
 }
 
 func startEditor(editor string, env []string) error {
+	tty, err := tty.Open()
+	if err != nil {
+		return err
+	}
+	defer tty.Close()
 	cmd := exec.Command(editor)
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
+	cmd.Stdin = tty.Input()
+	cmd.Stdout = tty.Output()
+	cmd.Stderr = tty.Output()
 	cmd.Env = append(os.Environ(), env...)
-	return cmd.Start()
+	//return cmd.Start()
+	if err := cmd.Run(); err != nil {
+		return fmt.Errorf("abort renames: %s", err)
+	}
+	return nil
 }

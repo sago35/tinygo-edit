@@ -19,8 +19,8 @@ type cli struct {
 
 var (
 	app    = kingpin.New(appName, appDescription)
-	target = app.Flag("target", "target name").Default("pyportal").String()
-	editor = app.Flag("editor", "editor path").Default("gvim").String()
+	target = app.Flag("target", "target name").Default("pyportal").Enum("pyportal", "feather-m4", "wioterminal", "xiao", "itsybitsy-nrf52840")
+	editor = app.Flag("editor", "editor path").Default("vim").String()
 )
 
 // Run ...
