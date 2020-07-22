@@ -59,6 +59,10 @@ func (c *cli) Run(args []string) error {
 
 	switch k {
 	default:
+		if *editor == `vim` {
+			*wait = true
+		}
+
 		err := edit(target, *editor, *wait)
 		if err != nil {
 			return err
