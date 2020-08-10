@@ -70,7 +70,16 @@ func getTargets(tinygopath string) ([]string, error) {
 
 	r, err := os.Open(filepath.Join(os.Getenv(`TINYGOPATH`), "Makefile"))
 	if err != nil {
-		return nil, err
+		// read from $TINYGOPATH/targets/*.json
+		matches, err := filepath.Glob(filepath.Join(os.Getenv(`TINYGOPATH`), `targets`, `*.json`))
+		if err != nil {
+			return nil, err
+		}
+		for i := range matches {
+			matches[i] = strings.TrimSuffix(filepath.Base(matches[i]), filepath.Ext(matches[i]))
+		}
+
+		return matches, err
 	}
 	defer r.Close()
 
