@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
 	"io"
 	"os"
@@ -67,40 +66,18 @@ func (c *cli) Run(args []string) error {
 }
 
 func getTargets(tinygopath string) ([]string, error) {
+	return getTargetsFromJson(tinygopath)
+}
 
-	r, err := os.Open(filepath.Join(os.Getenv(`TINYGOPATH`), "Makefile"))
+func getTargetsFromJson(tinygopath string) ([]string, error) {
+	// read from $TINYGOPATH/targets/*.json
+	matches, err := filepath.Glob(filepath.Join(os.Getenv(`TINYGOPATH`), `targets`, `*.json`))
 	if err != nil {
-		// read from $TINYGOPATH/targets/*.json
-		matches, err := filepath.Glob(filepath.Join(os.Getenv(`TINYGOPATH`), `targets`, `*.json`))
-		if err != nil {
-			return nil, err
-		}
-		for i := range matches {
-			matches[i] = strings.TrimSuffix(filepath.Base(matches[i]), filepath.Ext(matches[i]))
-		}
-
-		return matches, err
+		return nil, err
 	}
-	defer r.Close()
-
-	scanner := bufio.NewScanner(r)
-	targets := []string{}
-	exists := map[string]bool{}
-	for scanner.Scan() {
-		t := scanner.Text()
-		if strings.Contains(t, `$(TINYGO)`) && strings.Contains(t, `-target=`) {
-			fields := strings.Fields(t)
-			for _, f := range fields {
-				if strings.HasPrefix(f, `-target=`) {
-					target := f[8:]
-					if !exists[target] {
-						exists[target] = true
-						targets = append(targets, target)
-					}
-				}
-			}
-		}
+	for i := range matches {
+		matches[i] = strings.TrimSuffix(filepath.Base(matches[i]), filepath.Ext(matches[i]))
 	}
 
-	return targets, nil
+	return matches, err
 }
