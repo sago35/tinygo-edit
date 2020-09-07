@@ -86,8 +86,18 @@ Since the dev branch (de3ffe0af75305e354bfb3dadbba543809f3d8d5), GOROOT has been
 You can use this parameter for very simple completion.  
 To do this with tinygo-edit, use the --with-goroot option.  
 
-This approach is not suitable for developers who need to change the machine package and such.  
-However, it works with or without go.mod, so you can work with gopls very simply.  
+It works with or without go.mod, so you can work with gopls very simply.  
+
+```
+# Vim
+$ tinygo-edit --with-goroot --target xiao --editor vim --wait
+
+# gVim
+$ tinygo-edit --with-goroot --target xiao --editor gvim
+
+# VSCode
+$ tinygo-edit --with-goroot --target xiao --editor code
+```
 
 
 ## Installation
