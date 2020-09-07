@@ -82,7 +82,7 @@ If you don't want to remove the go.mod, try the following page
 
 ## Usage (--with-goroot)
 
-Since the dev branch (de3ffe0af75305e354bfb3dadbba543809f3d8d5), GOROOT has been added to tinygo info.  
+Since the dev branch ([de3ffe0af75305e354bfb3dadbba543809f3d8d5](https://github.com/tinygo-org/tinygo/tree/de3ffe0af75305e354bfb3dadbba543809f3d8d5)), GOROOT has been added to tinygo info.  
 You can use this parameter for very simple completion.  
 To do this with tinygo-edit, use the --with-goroot option.  
 
