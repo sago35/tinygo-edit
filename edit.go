@@ -47,6 +47,42 @@ func edit(target, editor string, wait bool) error {
 	return nil
 }
 
+func editWithGOROOT(target, editor string, wait bool) error {
+	buf := bytes.Buffer{}
+	cmd := exec.Command(`tinygo`, `info`, `-target`, target)
+	cmd.Stdout = &buf
+	cmd.Stderr = os.Stderr
+	err := cmd.Run()
+	if err != nil {
+		return err
+	}
+
+	env := []string{}
+	scanner := bufio.NewScanner(&buf)
+	for scanner.Scan() {
+		line := scanner.Text()
+		s := strings.SplitN(line, `:`, 2)
+		if len(s) != 2 {
+			continue
+		}
+		s[1] = strings.TrimLeft(s[1], ` `)
+
+		switch s[0] {
+		case `cached GOROOT`:
+			env = append(env, fmt.Sprintf(`GOROOT=%s`, s[1]))
+		case `build tags`:
+			env = append(env, fmt.Sprintf(`GOFLAGS=-tags=%s`, strings.Join(strings.Split(s[1], ` `), `,`)))
+		}
+	}
+
+	err = startEditor(editor, env, wait)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func startEditor(editor string, env []string, wait bool) error {
 	tty, err := tty.Open()
 	if err != nil {

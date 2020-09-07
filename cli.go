@@ -25,6 +25,7 @@ var (
 	target string
 	editor = app.Flag("editor", "editor path").Default("vim").String()
 	wait   = app.Flag("wait", "wait for the editor to close").Bool()
+	goroot = app.Flag("with-goroot", "use proper GOROOT").Bool()
 )
 
 // Run ...
@@ -54,6 +55,13 @@ func (c *cli) Run(args []string) error {
 	default:
 		if *editor == `vim` {
 			*wait = true
+		}
+
+		if *goroot {
+			err := editWithGOROOT(target, *editor, *wait)
+			if err != nil {
+				return err
+			}
 		}
 
 		err := edit(target, *editor, *wait)
