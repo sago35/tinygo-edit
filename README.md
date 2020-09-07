@@ -80,6 +80,15 @@ If you don't want to remove the go.mod, try the following page
 * https://github.com/tinygo-org/tinygo-site/pull/107
   * https://deploy-preview-107--tinygo.netlify.app/ide-integration/
 
+## Usage (--with-goroot)
+
+Since the dev branch (de3ffe0af75305e354bfb3dadbba543809f3d8d5), GOROOT has been added to tinygo info.  
+You can use this parameter for very simple completion.  
+To do this with tinygo-edit, use the --with-goroot option.  
+
+This approach is not suitable for developers who need to change the machine package and such.  
+However, it works with or without go.mod, so you can work with gopls very simply.  
+
 
 ## Installation
 
