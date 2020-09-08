@@ -62,6 +62,7 @@ func (c *cli) Run(args []string) error {
 			if err != nil {
 				return err
 			}
+			return nil
 		}
 
 		err := edit(target, *editor, *wait)
