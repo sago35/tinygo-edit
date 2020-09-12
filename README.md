@@ -37,13 +37,22 @@ $ eval "$(tinygo-edit --completion-script-zsh)"
 ```
 usage: tinygo-edit [<flags>]
 
+It is possible to use the following environment variables
+
+  To get a list of targets from the result of 'tinygo targets':
+    export TINYGO_EDIT_WITH_GOROOT=1
+
+  Using the GOROOT environment variable to link with gopls:
+    export TINYGO_EDIT_WITH_TINYGO_TARGETS=1
+
 Flags:
-  -h, --help             Show context-sensitive help (also try --help-long and
-                         --help-man).
-      --target=pyportal  target name
-      --editor="vim"     editor path
-      --wait             wait for the editor to close
-      --version          Show application version.
+  -h, --help           Show context-sensitive help (also try --help-long and
+                       --help-man).
+      --editor="vim"   editor path
+      --wait           wait for the editor to close
+      --with-goroot    use proper GOROOT
+      --target=TARGET  target name
+      --version        Show application version.
 ```
 
 This program uses $TINYGOPATH, so set it up.  
@@ -117,7 +126,12 @@ $ go build
 * go
 * kingpin.v2
 
-## Notice
+## FAQ
+
+### I can't "tinygo build" in a vim opened by tinygo-edit.
+
+If you are using `TINYGO_EDIT_WITH_GOROOT` or `--with-goroot`,  
+you can use the `unset GOROOT` command, which will allow you to build.
 
 ## Author
 
