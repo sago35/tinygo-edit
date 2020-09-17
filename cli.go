@@ -21,6 +21,8 @@ const (
 You can use the following environment variables
   To get a list of targets from the result of 'tinygo targets':
     export TINYGO_EDIT_WITH_GOROOT=1
+  To disable this feature:
+    export TINYGO_EDIT_WITH_GOROOT=0
 
   Using the GOROOT environment variable to link with gopls:
     export TINYGO_EDIT_WITH_TINYGO_TARGETS=1
@@ -37,7 +39,7 @@ var (
 	target string
 	editor = app.Flag("editor", "editor path").Default("vim").String()
 	wait   = app.Flag("wait", "wait for the editor to close").Bool()
-	goroot = app.Flag("with-goroot", "use proper GOROOT").Envar("TINYGO_EDIT_WITH_GOROOT").Default("0").Bool()
+	goroot = app.Flag("with-goroot", "use proper GOROOT").Envar("TINYGO_EDIT_WITH_GOROOT").Default("1").Bool()
 )
 
 // Run ...
