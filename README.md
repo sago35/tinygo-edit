@@ -37,10 +37,16 @@ $ eval "$(tinygo-edit --completion-script-zsh)"
 ```
 usage: tinygo-edit [<flags>]
 
-It is possible to use the following environment variables
+This program uses $TINYGOPATH
+
+  export TINYGOPATH=/path/to/tinygo-root-directory
+
+You can use the following environment variables
 
   To get a list of targets from the result of 'tinygo targets':
     export TINYGO_EDIT_WITH_GOROOT=1
+  To disable this feature:
+    export TINYGO_EDIT_WITH_GOROOT=0
 
   Using the GOROOT environment variable to link with gopls:
     export TINYGO_EDIT_WITH_TINYGO_TARGETS=1
@@ -125,6 +131,7 @@ $ go build
 
 * go
 * kingpin.v2
+* tinygo 0.15
 
 ## FAQ
 
