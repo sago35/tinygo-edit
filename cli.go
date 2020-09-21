@@ -5,7 +5,6 @@ import (
 	"bytes"
 	"fmt"
 	"io"
-	"os"
 	"os/exec"
 	"path/filepath"
 	"strings"
@@ -15,17 +14,12 @@ import (
 
 const (
 	appName        = "tinygo-edit"
-	appDescription = `This program uses $TINYGOPATH
-  export TINYGOPATH=/path/to/tinygo-root-directory
-
+	appDescription = `
 You can use the following environment variables
   To get a list of targets from the result of 'tinygo targets':
     export TINYGO_EDIT_WITH_GOROOT=1
   To disable this feature:
     export TINYGO_EDIT_WITH_GOROOT=0
-
-  Using the GOROOT environment variable to link with gopls:
-    export TINYGO_EDIT_WITH_TINYGO_TARGETS=1
 `
 )
 
@@ -46,19 +40,13 @@ var (
 func (c *cli) Run(args []string) error {
 	app.UsageWriter(c.errStream)
 
-	targets := []string{}
-	var err error
-
-	if _, exists := os.LookupEnv("TINYGO_EDIT_WITH_TINYGO_TARGETS"); exists {
-		targets, err = getTargetsFromTinygoTargets()
-	} else {
-		if os.Getenv(`TINYGOPATH`) == "" {
-			return fmt.Errorf("$TINYGOPATH is not set. ex: export TINYGOPATH=/path/to/your/tinygo/")
-		}
-		targets, err = getTargets(os.Getenv(`TINYGOPATH`))
-	}
+	targets, err := getTargetsFromTinygoTargets()
 	if err != nil {
-		return err
+		tinygopath, err := getTinygoPath()
+		if err != nil {
+			return err
+		}
+		targets, err = getTargets(tinygopath)
 	}
 	app.Flag("target", "target name").EnumVar(&target, targets...)
 
@@ -108,7 +96,7 @@ func getTargets(tinygopath string) ([]string, error) {
 
 func getTargetsFromJson(tinygopath string) ([]string, error) {
 	// read from $TINYGOPATH/targets/*.json
-	matches, err := filepath.Glob(filepath.Join(os.Getenv(`TINYGOPATH`), `targets`, `*.json`))
+	matches, err := filepath.Glob(filepath.Join(tinygopath, `targets`, `*.json`))
 	if err != nil {
 		return nil, err
 	}
@@ -137,4 +125,18 @@ func getTargetsFromTinygoTargets() ([]string, error) {
 	}
 
 	return targets, nil
+}
+
+func getTinygoPath() (string, error) {
+	buf := new(bytes.Buffer)
+	cmd := exec.Command("tinygo", "env", "TINYGOROOT")
+	cmd.Stdout = buf
+	cmd.Stderr = buf
+
+	err := cmd.Run()
+	if err != nil {
+		return "", err
+	}
+
+	return strings.TrimSpace(buf.String()), nil
 }
