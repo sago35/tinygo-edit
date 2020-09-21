@@ -21,7 +21,12 @@ func edit(target, editor string, wait bool) error {
 		return err
 	}
 
-	env := []string{`GOPATH=` + strings.Join([]string{os.Getenv(`TINYGOPATH`), os.Getenv(`GOPATH`)}, string(os.PathListSeparator))}
+	tinygopath, err := getTinygoPath()
+	if err != nil {
+		return err
+	}
+
+	env := []string{`GOPATH=` + strings.Join([]string{tinygopath, os.Getenv(`GOPATH`)}, string(os.PathListSeparator))}
 	scanner := bufio.NewScanner(&buf)
 	for scanner.Scan() {
 		line := scanner.Text()
