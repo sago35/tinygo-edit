@@ -14,13 +14,7 @@ import (
 
 const (
 	appName        = "tinygo-edit"
-	appDescription = `
-You can use the following environment variables
-  To get a list of targets from the result of 'tinygo targets':
-    export TINYGO_EDIT_WITH_GOROOT=1
-  To disable this feature:
-    export TINYGO_EDIT_WITH_GOROOT=0
-`
+	appDescription = ``
 )
 
 type cli struct {
@@ -29,11 +23,11 @@ type cli struct {
 }
 
 var (
-	app    = kingpin.New(appName, appDescription)
-	target string
-	editor = app.Flag("editor", "editor path").Default("vim").String()
-	wait   = app.Flag("wait", "wait for the editor to close").Bool()
-	goroot = app.Flag("with-goroot", "use proper GOROOT").Envar("TINYGO_EDIT_WITH_GOROOT").Default("1").Bool()
+	app      = kingpin.New(appName, appDescription)
+	target   string
+	editor   = app.Flag("editor", "editor path").Default("vim").String()
+	wait     = app.Flag("wait", "wait for the editor to close").Bool()
+	woGoroot = app.Flag("without-goroot", "don't use proper GOROOT").Bool()
 )
 
 // Run ...
@@ -73,15 +67,16 @@ func (c *cli) Run(args []string) error {
 			*wait = true
 		}
 
-		if *goroot {
-			err := editWithGOROOT(target, *editor, *wait)
+		if *woGoroot {
+			// deprecated : To be removed in 0.3.0
+			err := edit(target, *editor, *wait)
 			if err != nil {
 				return err
 			}
 			return nil
 		}
 
-		err := edit(target, *editor, *wait)
+		err := editWithGOROOT(target, *editor, *wait)
 		if err != nil {
 			return err
 		}
