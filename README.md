@@ -13,7 +13,9 @@ Using tinygo-edit, you can easily integrate with gopls.
 
 ![tinygo-edit-with-code](tinygo-edit-with-code.gif)
 
-* https://dev.to/sago35/tinygo-vim-gopls-48h1
+If you are using VSCode, you had better read the following.
+
+* https://marketplace.visualstudio.com/items?itemName=tinygo.vscode-tinygo
 
 ### Bash/ZSH Shell Completion
 
