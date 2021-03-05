@@ -9,6 +9,10 @@ Using tinygo-edit, you can easily integrate with gopls.
 
 ![tinygo-edit-with-vim](tinygo-edit-with-vim.gif)
 
+If you are using Vim, you had better read the following.
+
+* https://github.com/sago35/tinygo.vim
+
 ### VSCode
 
 ![tinygo-edit-with-code](tinygo-edit-with-code.gif)
