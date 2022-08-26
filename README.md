@@ -91,7 +91,7 @@ If you don't want to remove the go.mod, try the following page
 ## Installation
 
 ```
-$ go get github.com/sago35/tinygo-edit
+$ go install github.com/sago35/tinygo-edit@latest
 ```
 
 ## Build
