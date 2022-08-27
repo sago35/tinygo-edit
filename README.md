@@ -100,7 +100,7 @@ You can find your GOBIN by running ```go env```.
 ### If GOBIN is empty
 The command below should be added to your ```.bashrc``` or ```.zshrc```.
 ```
-export PATH="$HOME/go/bin/:$PATH"
+export PATH="$GOPATH/bin/:$PATH"
 ```
 ### If GOBIN is not empty
 The command below should be added to your ```.bashrc``` or ```.zshrc```.
