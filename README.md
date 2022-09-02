@@ -90,14 +90,27 @@ If you don't want to remove the go.mod, try the following page
 
 ## Installation
 
+To install, run:
 ```
-$ go get github.com/sago35/tinygo-edit
+go install github.com/sago35/tinygo-edit@latest
 ```
+Be sure that you have added your GOBIN to the PATH.
+You can find your GOBIN by running ```go env```.
 
+### If GOBIN is empty
+The command below should be added to your ```.bashrc``` or ```.zshrc```.
+```
+export PATH="$GOPATH/bin/:$PATH"
+```
+### If GOBIN is not empty
+The command below should be added to your ```.bashrc``` or ```.zshrc```.
+```
+export PATH="$GOBIN:$PATH"
+```
 ## Build
 
 ```
-$ go build
+go build
 ```
 
 ### Environment
